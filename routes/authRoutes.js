@@ -1,0 +1,28 @@
+const express = require('express');
+const { signUp, signIn, verifyUser, logout, loginStatus, getUser, updateProfile, resendVerificationMail, forgotPassword, changePassword, getUsers, getUserById, resetPin, changePin, userDashboard, adminDashboard, getUserTransactions, getActiveBanks, verifyBankInfo, withdrawFunds, testDb } = require('../controllers/authController');
+const { adminMiddleWare } = require('../middleWare/adminMiddleWare');
+const { authMiddleWare } = require('../middleWare/authMiddleWare');
+const router = express.Router();
+
+router.post('/signup', signUp);
+router.post('/signin', signIn);
+router.get('/verifyuser/:token', verifyUser);
+router.get('/logout', logout);
+router.get('/test', testDb);
+router.post('/verifybankaccount', authMiddleWare, verifyBankInfo);
+router.post('/withdrawfunds', authMiddleWare, withdrawFunds);
+router.get('/userdashboard', authMiddleWare, userDashboard);
+router.get('/admindashboard', adminMiddleWare, adminDashboard);
+router.get('/loggedinstatus', loginStatus);
+router.post('/resetpin', authMiddleWare, resetPin);
+router.patch('/changepin/:token', authMiddleWare, changePin);
+router.get('/banks', authMiddleWare, getActiveBanks);
+router.post('/updateprofile', authMiddleWare, updateProfile);
+router.post('/resendverification', resendVerificationMail);
+router.post('/forgotpassword', forgotPassword);
+router.patch('/changepassword/:token', changePassword);
+router.get('/', authMiddleWare, getUser);
+router.get('/users', adminMiddleWare, getUsers);
+router.get('/user/:id', adminMiddleWare, getUserById);
+router.get('/user-transactions/:id', adminMiddleWare, getUserTransactions);
+module.exports = router;
